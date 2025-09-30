@@ -1,0 +1,12 @@
+@keyframes move-right {
+  0% {
+    left: -100px;
+  }
+  100% {
+    left: 100px;
+  }
+}
+
+#block-4 {
+    animation: move-right 1.0s linear infinite alternate;
+}
