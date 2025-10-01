@@ -11,15 +11,31 @@ import { MatButton } from '@angular/material/button';
 })
 export class Game {
   blocks = [
-    {id: 1, animate: false }
+    {id: 1, animate: false, posX: 0, direction: 1}
   ];
   nextId = 2;
 
-  dropBlock() {
-    this.blocks.unshift({ id: this.nextId++, animate: true});
-    const block = this.blocks.find(b => b.id === this.nextId - 2)
-    if (block) {
-      block.animate = false
-    }
+  constructor() {
+    this.animate();
   }
+
+  dropBlock() {
+    this.blocks.unshift({ id: this.nextId++, animate: true, posX: 0, direction: 1});
+    // const block = this.blocks.find(b => b.id === this.nextId - 2)
+    // if (block) {
+    //   block.animate = false
+    // }
+  }
+
+  animate() {
+    const block = this.blocks.find(b => b.id === this.nextId - 1)
+    if (block) {
+      // Reverse direction at bounds
+      if (block.posX >= 100) block.direction = -1;
+      if (block.posX <= -100) block.direction = 1;
+      block.posX += 2 * block.direction;
+    }
+    requestAnimationFrame(() => this.animate());
+  }
+
 }
