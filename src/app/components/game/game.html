@@ -3,6 +3,7 @@
         {{ block.id }} {{ block.animate }} {{ block.posX }}
     </div>
 </div>
-<div class="flex flex-row justify-center items-center py-5">
+<div class="flex flex-col justify-center items-center py-5">
     <button mat-raised-button color="primary w-54" (click)="dropBlock()">Drop Block</button>
+    <p class="mt-20">Score: {{ score }}</p>
 </div>

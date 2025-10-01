@@ -11,31 +11,44 @@ import { MatButton } from '@angular/material/button';
 })
 export class Game {
   blocks = [
-    {id: 1, animate: false, posX: 0, direction: 1}
+    { id: 1, animate: false, posX: 200, direction: -1 }
   ];
   nextId = 2;
+  score = 0;
+  get currentBlock() {
+    return this.blocks.find(b => b.id === this.nextId - 1);
+  }
+  get theBlockWeJustDropped() {
+    return this.blocks.find(b => b.id === this.nextId - 2);
+  }
 
   constructor() {
     this.animate();
   }
-
   dropBlock() {
-    this.blocks.unshift({ id: this.nextId++, animate: true, posX: 0, direction: 1});
-    // const block = this.blocks.find(b => b.id === this.nextId - 2)
-    // if (block) {
-    //   block.animate = false
-    // }
-  }
-
-  animate() {
-    const block = this.blocks.find(b => b.id === this.nextId - 1)
+    const block = this.currentBlock;
     if (block) {
-      // Reverse direction at bounds
-      if (block.posX >= 100) block.direction = -1;
-      if (block.posX <= -100) block.direction = 1;
+      if (block.posX > -20 && block.posX < 20) {
+        this.blocks.unshift({ id: this.nextId++, animate: true, posX: 200, direction: -1 });
+        const blockWeJustDropped = this.theBlockWeJustDropped;
+        if (blockWeJustDropped) {
+          blockWeJustDropped.posX = 0
+        }
+        this.score++;
+      } else {
+        console.log("Game over!");
+      }
+    } else {
+      console.log("No block to drop!");
+    }
+  }
+  animate() {
+    const block = this.currentBlock;
+    if (block) {
+      if (block.posX >= 200) block.direction = -1;
+      if (block.posX <= -200) block.direction = 1;
       block.posX += 2 * block.direction;
     }
     requestAnimationFrame(() => this.animate());
   }
-
 }
