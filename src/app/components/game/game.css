@@ -7,6 +7,6 @@
   }
 }
 
-#block-4 {
+.animate-block {
     animation: move-right 1.0s linear infinite alternate;
 }
