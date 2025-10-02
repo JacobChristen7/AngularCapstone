@@ -13,6 +13,7 @@ import { MatButton } from '@angular/material/button';
 export class Game {
   gameWidth = 350
   remainingWidth = 300;
+  blockHeight = 100;
   nextID = 2;
   score = 0;
   scoreScale = 1;
@@ -20,10 +21,12 @@ export class Game {
   blockSpeed = 6;
   towerScale = "100%";
   divBottomProperty = "auto";
+  endGameTowerScale = 0.4;
+  endGameTransition = "none";
 
   blocks = [
-    { id: 1, posX: 0, direction: -1, width: this.gameWidth },
-    { id: 0, posX: 0, direction: 0, width: this.gameWidth }
+    { id: 1, posX: 0, direction: -1, width: this.gameWidth, height: this.blockHeight },
+    { id: 0, posX: 0, direction: 0, width: this.gameWidth, height: this.blockHeight }
   ];
 
   get currentBlock() {
@@ -51,7 +54,7 @@ export class Game {
           if (blockWeJustDropped) {
             this.remainingWidth -= Math.abs(this.currentBlock.posX)
             this.currentBlock.width = this.remainingWidth
-            this.blocks.unshift({ id: this.nextID++, posX: randomStartSpot, direction: direction, width: this.remainingWidth });
+            this.blocks.unshift({ id: this.nextID++, posX: randomStartSpot, direction: direction, width: this.remainingWidth, height: this.blockHeight });
             this.theBlockWeJustDropped.posX = 0;
           }
           this.score++;
@@ -81,8 +84,13 @@ export class Game {
   }
 
   animateTowerEndGame() {
-    this.towerScale = "20%";
-    this.divBottomProperty = "0";
+    this.towerScale = String(this.endGameTowerScale);
+    this.divBottomProperty = String(0);
+    this.endGameTransition = "width 1s ease, height 1s ease";
+    this.blocks.forEach(block => {
+      block.width *= this.endGameTowerScale
+      block.height *= this.endGameTowerScale
+    })
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="fixed h-full" id="background">
-    <div class="fixed top-0 w-full flex flex-col items-center pt-20" id="block-container" [style.transform]="`scale(${towerScale})`" [style.bottom]="`${divBottomProperty}`">
+    <div class="fixed top-0 w-full flex flex-col items-center pt-40" id="block-container" [style.transform]="`scale(${towerScale})`" [style.bottom]="`${divBottomProperty}`">
         @for (block of blocks; track block.id) {
-            <div class="bg-red-500 h-30 relative" [style.transform]="`translateX(${block.posX}px)`" [style.width]="`${block.width}px`" id="block"></div>
+            <div class="bg-red-500 relative" [style.transform]="`translateX(${block.posX}px)`" [style.width]="`${block.width}px`" [style.height]="`${block.height}px`" [style.transition]="`${endGameTransition}`" id="block"></div>
         }
     </div>
     <div class="fixed bottom-10 flex flex-col justify-center items-center w-full">
