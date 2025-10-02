@@ -1,13 +1,31 @@
 <mat-card class="max-w-md mx-auto mt-20 shadow-lg bg-white">
-  <mat-card-title class="text-center text-red-500 pt-7">
-    <span class="text-2xl border-y-4 rounded-lg">Leaderboard</span>
+  <mat-card-title class="text-center text-red-500 py-7">
+    <span class="text-4xl border-y-4 rounded-lg">Leaderboard</span>
   </mat-card-title>
   <mat-card-content class="">
-    <div *ngFor="let player of players" class="flex justify-between items-center py-2 px-4 border-b last:border-b-0">
-      <span class="font-medium text-gray-700">{{ player.name }}</span>
-			<div class="w-18 text-left">
-      	<span class="font-bold text-red-500">Score {{ player.score }}</span>
+    <div *ngFor="let player of sortedPlayers; let i = index" class="flex justify-between items-center py-2 px-4 border-b last:border-b-0">
+			<span
+				[ngClass]="{
+					'text-3xl font-extrabold text-yellow-400': i === 0,
+					'text-2xl font-bold text-gray-400': i === 1,
+					'text-xl font-bold text-orange-700': i === 2,
+					'text-base font-medium text-gray-700': i > 2
+				}"
+			>
+				{{ i + 1 }}. {{ player.name }} <span *ngIf="i === 0">🏆</span>
+			</span>
+			<div class="w-24 text-right">
+				<span
+					[ngClass]="{
+						'text-yellow-400 font-extrabold text-3xl': i === 0,
+						'text-gray-400 font-bold text-2xl': i === 1,
+						'text-orange-700 font-bold text-xl': i === 2,
+						'text-gray-700 font-medium text-base': i > 2
+					}"
+				>
+					{{ player.score }}
+				</span>
 			</div>
-    </div>
+		</div>
   </mat-card-content>
 </mat-card>
