@@ -11,22 +11,26 @@ import { MatButton } from '@angular/material/button';
 })
 
 export class Game {
-  width = 200;
-  threshold = 50;
-  nextId = 2;
+  gameWidth = 350
+  remainingWidth = 300;
+  nextID = 2;
   score = 0;
   scoreScale = 1;
+  modHowFarLeftAndRight = 1.2;
+  blockSpeed = 6;
+  towerScale = "100%";
+  divBottomProperty = "auto";
 
   blocks = [
-    { id: 1, posX: 0, direction: -1 },
-    { id: 0, posX: 0, direction: 0 }
+    { id: 1, posX: 0, direction: -1, width: this.gameWidth },
+    { id: 0, posX: 0, direction: 0, width: this.gameWidth }
   ];
 
   get currentBlock() {
-    return this.blocks.find(b => b.id === this.nextId - 1);
+    return this.blocks.find(b => b.id === this.nextID - 1);
   }
   get theBlockWeJustDropped() {
-    return this.blocks.find(b => b.id === this.nextId - 2);
+    return this.blocks.find(b => b.id === this.nextID - 2);
   }
 
   constructor() {
@@ -36,30 +40,34 @@ export class Game {
   dropBlock() {
     const block = this.currentBlock;
     if (block) {
-      if (block.posX > (this.threshold - (2 * this.threshold)) && block.posX < this.threshold) {
-        const randomStartSpot = Number((Math.random() * (2 * this.width) - this.width).toPrecision(1))
-        const direction = randomStartSpot < 0 ? -1 : 1
-        this.blocks.unshift({ id: this.nextId++, posX: randomStartSpot, direction: direction });
-        const blockWeJustDropped = this.theBlockWeJustDropped;
-        if (blockWeJustDropped) {
-          blockWeJustDropped.posX = 0
+        if (Math.abs(block.posX) > this.remainingWidth) {
+          this.blocks.shift()
+          this.animateTowerEndGame()
+          console.log("Game Over!")
+        } else {
+          const randomStartSpot = Number((Math.random() * (2 * this.gameWidth) - this.gameWidth).toPrecision(1))
+          const direction = randomStartSpot < 0 ? -1 : 1
+          const blockWeJustDropped = this.theBlockWeJustDropped;
+          if (blockWeJustDropped) {
+            this.remainingWidth -= Math.abs(this.currentBlock.posX)
+            this.currentBlock.width = this.remainingWidth
+            this.blocks.unshift({ id: this.nextID++, posX: randomStartSpot, direction: direction, width: this.remainingWidth });
+            this.theBlockWeJustDropped.posX = 0;
+          }
+          this.score++;
+          this.animateScore();
         }
-        this.score++;
-        this.animateScore();
-      } else {
-        console.log("Game over!");
-      }
     } else {
-      console.log("No block to drop!");
+      console.log("Block is undefined!");
     }
   }
 
   animate() {
     const block = this.currentBlock;
     if (block) {
-      if (block.posX >= this.width) block.direction = -1;
-      if (block.posX <= -this.width) block.direction = 1;
-      block.posX += 6 * block.direction;
+      if (block.posX >= this.gameWidth * this.modHowFarLeftAndRight) block.direction = -1;
+      if (block.posX <= -this.gameWidth * this.modHowFarLeftAndRight) block.direction = 1;
+      block.posX += this.blockSpeed * block.direction;
     }
     requestAnimationFrame(() => this.animate());
   }
@@ -70,6 +78,11 @@ export class Game {
     setTimeout(() => {
       this.scoreScale -= 0.4;
     }, 200)
+  }
+
+  animateTowerEndGame() {
+    this.towerScale = "20%";
+    this.divBottomProperty = "0";
   }
 
 }
