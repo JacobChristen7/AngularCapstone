@@ -8,3 +8,7 @@
     margin: 0;
     overflow: hidden;
 }
+
+#score {
+    transition: transform 0.3s ease;
+}

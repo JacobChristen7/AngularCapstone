@@ -15,9 +15,11 @@ export class Game {
   threshold = 50;
   nextId = 2;
   score = 0;
+  scoreScale = 1;
 
   blocks = [
-    { id: 1, posX: this.width, direction: -1 }
+    { id: 1, posX: 0, direction: -1 },
+    { id: 0, posX: 0, direction: 0 }
   ];
 
   get currentBlock() {
@@ -43,6 +45,7 @@ export class Game {
           blockWeJustDropped.posX = 0
         }
         this.score++;
+        this.animateScore();
       } else {
         console.log("Game over!");
       }
@@ -59,6 +62,14 @@ export class Game {
       block.posX += 6 * block.direction;
     }
     requestAnimationFrame(() => this.animate());
+  }
+
+  animateScore() {
+    this.scoreScale += 0.4;
+    
+    setTimeout(() => {
+      this.scoreScale -= 0.4;
+    }, 200)
   }
 
 }
