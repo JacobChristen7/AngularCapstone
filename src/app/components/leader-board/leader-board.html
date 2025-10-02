@@ -3,8 +3,9 @@
     <span class="text-4xl border-y-4 rounded-lg">Leaderboard</span>
   </mat-card-title>
   <mat-card-content class="">
-    <div *ngFor="let player of sortedPlayers; let i = index" class="flex justify-between items-center py-2 px-4 border-b last:border-b-0">
+    <div *ngFor="let player of sortedPlayers.slice(0, 10); let i = index" class="flex justify-between items-center py-2 px-4 border-b last:border-b-0">
 			<span
+				class="flex items-center"
 				[ngClass]="{
 					'text-3xl font-extrabold text-yellow-400': i === 0,
 					'text-2xl font-bold text-gray-400': i === 1,
@@ -12,7 +13,9 @@
 					'text-base font-medium text-gray-700': i > 2
 				}"
 			>
-				{{ i + 1 }}. {{ player.name }} <span *ngIf="i === 0">🏆</span>
+				{{ i + 1 }}.
+				<span [ngClass]="{ 'shine-target': i === 0 }" class="pl-2">{{ player.name }}</span>
+				<span *ngIf="i === 0" class="pl-2">🏆</span>
 			</span>
 			<div class="w-24 text-right">
 				<span
