@@ -1,0 +1,13 @@
+<mat-card class="max-w-md mx-auto mt-20 shadow-lg bg-white">
+  <mat-card-title class="text-center text-red-500 pt-7">
+    <span class="text-2xl border-y-4 rounded-lg">Leaderboard</span>
+  </mat-card-title>
+  <mat-card-content class="">
+    <div *ngFor="let player of players" class="flex justify-between items-center py-2 px-4 border-b last:border-b-0">
+      <span class="font-medium text-gray-700">{{ player.name }}</span>
+			<div class="w-18 text-left">
+      	<span class="font-bold text-red-500">Score {{ player.score }}</span>
+			</div>
+    </div>
+  </mat-card-content>
+</mat-card>
