@@ -56,7 +56,7 @@ export class Game {
     if (block) {
       if (block.posX >= this.width) block.direction = -1;
       if (block.posX <= -this.width) block.direction = 1;
-      block.posX += 2 * block.direction;
+      block.posX += 6 * block.direction;
     }
     requestAnimationFrame(() => this.animate());
   }

@@ -1,12 +1,10 @@
-@keyframes move-right {
-  0% {
-    left: -100px;
-  }
-  100% {
-    left: 100px;
-  }
-}
-
-.animate-block {
-    animation: move-right 1.0s linear infinite alternate;
+#background {
+    /* These properties make the background image scale dynamically based on viewport width and height */
+    background-image: url('/assets/city.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100vw;
+    margin: 0;
+    overflow: hidden;
 }

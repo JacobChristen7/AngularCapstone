@@ -1,14 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { Navbar } from './components/navbar/navbar';
-import { PlayerInput } from './components/player-input/player-input';
-import { Game } from './components/game/game'
 import { RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatButtonModule, Navbar, PlayerInput, Game],
+  imports: [RouterOutlet, MatButtonModule, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
