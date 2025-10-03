@@ -1,12 +1,27 @@
-@keyframes move-right {
-  0% {
-    left: -100px;
-  }
-  100% {
-    left: 100px;
-  }
+#background {
+    /* These properties make the background image scale dynamically based on viewport width and height */
+    background-image: url('/assets/city.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100vw;
+    margin: 0;
+    overflow: hidden;
 }
 
-.animate-block {
-    animation: move-right 1.0s linear infinite alternate;
+#block {
+    background-image: url('/assets/building-facade.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    overflow: hidden;
+}
+
+#score {
+    transition: transform 0.3s ease;
+}
+
+#block-container {
+    transition: transform 1s ease, padding 1s ease;
 }

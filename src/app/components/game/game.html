@@ -1,9 +1,16 @@
-<div class="flex flex-col items-center space-y-2" id="block-container">
-    <div *ngFor="let block of blocks" class="bg-red-500 h-30 w-100 relative" [style.transform]="`translateX(${block.posX}px)`">
-        {{ block.id }} {{ block.animate }} {{ block.posX }}
+<div class="fixed h-full" id="background">
+    <div class="fixed top-0 w-full flex flex-col items-center" id="block-container" [style.transform]="`scale(${towerScale})`" [style.bottom]="`${divBottomProperty}`" [style.paddingTop]="`${topPadding}px`">
+        @for (block of blocks; track block.id) {
+            <div class="bg-red-500 relative" [style.transform]="`translateX(${block.posX}px)`" [style.width]="`${block.width}px`" [style.height]="`${block.height}px`" [style.transition]="`${endGameTransition}`" id="block"></div>
+        }
     </div>
-</div>
-<div class="flex flex-col justify-center items-center py-5">
-    <button mat-raised-button color="primary w-54" (click)="dropBlock()">Drop Block</button>
-    <p class="mt-20">Score: {{ score }}</p>
+    <div class="fixed bottom-10 flex flex-col justify-center items-center w-full">
+        <div class="bg-gray-500/30 backdrop-blur-lg border-1 border-white/50 p-10 rounded-lg space-y-5 w-1/4">
+            <div class="text-white">
+                <p class="font-semibold text-3xl text-center mb-5">Score</p>
+                <p class="font-extrabold text-5xl text-center" id="score" [style.transform]="`scale(${scoreScale})`"> {{ score }} </p>
+            </div>
+            <button mat-raised-button color="primary w-full" (click)="dropBlock()"> {{ buttonText }} </button>
+        </div>
+    </div>
 </div>
