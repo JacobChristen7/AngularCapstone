@@ -3,7 +3,7 @@
     <span class="text-4xl border-y-4 rounded-lg">Leaderboard</span>
   </mat-card-title>
   <mat-card-content class="">
-    <div *ngFor="let player of sortedPlayers.slice(0, 10); let i = index" 
+    <div *ngFor="let score of scores$ | async; let i = index" 
 					class="flex justify-between items-center py-2 px-4 border-b last:border-b-0 transition-transform duration-200 ease-in-out hover:scale-105">
 			<span
 				class="flex items-center"
@@ -15,7 +15,7 @@
 				}"
 			>
 				{{ i + 1 }}.
-				<span [ngClass]="{ 'shine-target': i === 0 }" class="pl-2">{{ player.name }}</span>
+				<span [ngClass]="{ 'shine-target': i === 0 }" class="pl-2">{{ score.playerName }}</span>
 				<span *ngIf="i === 0" class="pl-2">🏆</span>
 			</span>
 			<div class="w-24 text-right">
@@ -27,7 +27,7 @@
 						'text-gray-700 font-medium text-base': i > 2
 					}"
 				>
-					{{ player.score }}
+					{{ score.score }}
 				</span>
 			</div>
 		</div>
