@@ -1,0 +1,36 @@
+.shine-target {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.shine-target::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.7) 50%, transparent 100%);
+  animation: sweep45 1.5s cubic-bezier(.4,0,.2,1) infinite;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+@keyframes sweep45 {
+  0% {
+    left: -40%;
+    opacity: 0.8;
+  }
+  10% {
+    opacity: 1;
+  }
+  80% {
+    left: 100%;
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0.8;
+  }
+}
