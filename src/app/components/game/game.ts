@@ -18,7 +18,7 @@ export class Game {
   score = 0;
   scoreScale = 1;
   modHowFarLeftAndRight = 1.1;
-  blockSpeed = 6;
+  blockSpeed = 300;
   towerScale = 1;
   divBottomProperty = "auto";
   topPadding = String(160);
@@ -74,15 +74,24 @@ export class Game {
     }
   }
 
-  animateBlock() {
+  private lastTime = performance.now();
+
+  animateBlock(now?: number) {
+    if (!now) now = performance.now();
+    const delta = (now - this.lastTime) / 1000; // seconds
+    this.lastTime = now;
+  
     const block = this.currentBlock;
     if (block) {
       if (block.posX >= this.gameWidth * this.modHowFarLeftAndRight) block.direction = -1;
       if (block.posX <= -this.gameWidth * this.modHowFarLeftAndRight) block.direction = 1;
-      block.posX += this.blockSpeed * block.direction;
+  
+      // blockSpeed should now be in "pixels per second"
+      block.posX += this.blockSpeed * block.direction * delta;
     }
-    this.animationID = requestAnimationFrame(() => this.animateBlock());
-  }
+  
+    this.animationID = requestAnimationFrame((t) => this.animateBlock(t));
+  }  
 
   stopAnimation() {
     if (this.animationID !== 0) {
