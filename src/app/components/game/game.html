@@ -1,5 +1,5 @@
 <div class="fixed h-full" id="background">
-    <div class="fixed top-0 w-full flex flex-col items-center pt-40" id="block-container" [style.transform]="`scale(${towerScale})`" [style.bottom]="`${divBottomProperty}`">
+    <div class="fixed top-0 w-full flex flex-col items-center" id="block-container" [style.transform]="`scale(${towerScale})`" [style.bottom]="`${divBottomProperty}`" [style.paddingTop]="`${topPadding}px`">
         @for (block of blocks; track block.id) {
             <div class="bg-red-500 relative" [style.transform]="`translateX(${block.posX}px)`" [style.width]="`${block.width}px`" [style.height]="`${block.height}px`" [style.transition]="`${endGameTransition}`" id="block"></div>
         }
@@ -10,7 +10,7 @@
                 <p class="font-semibold text-3xl text-center mb-5">Score</p>
                 <p class="font-extrabold text-5xl text-center" id="score" [style.transform]="`scale(${scoreScale})`"> {{ score }} </p>
             </div>
-            <button mat-raised-button color="primary w-full" (click)="dropBlock()">Drop Block</button>
+            <button mat-raised-button color="primary w-full" (click)="dropBlock()"> {{ buttonText }} </button>
         </div>
     </div>
 </div>

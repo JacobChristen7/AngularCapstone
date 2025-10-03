@@ -23,5 +23,5 @@
 }
 
 #block-container {
-    transition: transform 1s ease;
+    transition: transform 1s ease, padding 1s ease;
 }
