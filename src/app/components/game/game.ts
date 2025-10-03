@@ -12,7 +12,6 @@ import { MatButton } from '@angular/material/button';
 
 export class Game {
   gameWidth = 300
-  remainingWidth = 300;
   blockHeight = 100;
   nextID = 2;
   score = 0;
@@ -46,28 +45,34 @@ export class Game {
 
   dropBlock() {
     if (this.buttonText === "Drop Block") {
-      const block = this.currentBlock;
-      if (block) {
-          if (Math.abs(block.posX) > this.remainingWidth) { //if they miss the skillshot
-            this.blocks.shift()
-            this.animateTowerEndGame()
-            this.buttonText = "Try Again!"
-          } else {
-            const randomStartSpot = Number((Math.random() * (2 * this.gameWidth) - this.gameWidth).toPrecision(1))
-            const direction = randomStartSpot < 0 ? -1 : 1
-            const blockWeJustDropped = this.theBlockWeJustDropped;
-            if (blockWeJustDropped) {
-              this.remainingWidth -= Math.abs(this.currentBlock.posX)
-              this.currentBlock.width = this.remainingWidth
-              this.blocks.unshift({ id: this.nextID++, posX: randomStartSpot, direction: direction, width: this.remainingWidth, height: this.blockHeight });
-              this.theBlockWeJustDropped.posX = 0;
-            }
-            this.score++;
-            this.animateScore();
-          }
-      } else {
+      const currentBlock = this.currentBlock;
+      const lastBlock = this.theBlockWeJustDropped;
+
+      if (!currentBlock || !lastBlock) {
         console.log("Block is undefined!");
+        return;
       }
+
+      // Calculate difference in position
+      const difference = Math.abs(currentBlock.posX - lastBlock.posX);
+      const signedDifference = (currentBlock.posX - lastBlock.posX)
+      const overlap = lastBlock.width - difference;
+
+      currentBlock.posX = lastBlock.posX + signedDifference / 2;
+
+      if (overlap <= 0) { //if they miss the skillshot
+        this.blocks.shift()
+        this.animateTowerEndGame()
+        this.buttonText = "Try Again!"
+      } else {
+        const randomStartSpot = Number((Math.random() * (2 * this.gameWidth) - this.gameWidth).toFixed(1))
+        const direction = randomStartSpot < 0 ? -1 : 1
+        currentBlock.width = overlap
+        this.blocks.unshift({ id: this.nextID++, posX: randomStartSpot, direction: direction, width: overlap, height: this.blockHeight });
+        this.score++;
+        this.animateScore();
+      }
+
     } else {
       this.restartGame()
       this.buttonText = "Drop Block"
@@ -116,6 +121,7 @@ export class Game {
     this.blocks.forEach(block => {
       block.width *= this.endGameTowerScale
       block.height *= this.endGameTowerScale
+      block.posX *= this.endGameTowerScale
     })
   }
 
@@ -126,7 +132,6 @@ export class Game {
     this.endGameTransition = "none";
     this.nextID = 2;
     this.score = 0;
-    this.remainingWidth = 300;
     this.blocks = [
       { id: 1, posX: 0, direction: -1, width: this.gameWidth, height: this.blockHeight },
       { id: 0, posX: 0, direction: 0, width: this.gameWidth, height: this.blockHeight }

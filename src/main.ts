@@ -6,6 +6,7 @@ import { routes } from './app/app.routes';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from './environments/environment';
 
 bootstrapApplication(App, {
@@ -14,6 +15,7 @@ bootstrapApplication(App, {
     ...(appConfig.providers || []),
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore())
   ]
 }).catch((err) => console.error(err));
