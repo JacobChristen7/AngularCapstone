@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButton } from '@angular/material/button';
 import { LeaderBoard } from '../leader-board/leader-board';
+import { Ranking } from '../ranking/ranking';
 
 import { ScoreService } from '../../services/score.service';
 import { PlayerService } from '../../services/player.service';
@@ -10,7 +11,7 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
-  imports: [CommonModule, MatGridListModule, MatButton, LeaderBoard],
+  imports: [CommonModule, MatGridListModule, MatButton, LeaderBoard, Ranking],
   templateUrl: './game.html',
   styleUrl: './game.css'
 })
@@ -31,6 +32,8 @@ export class Game {
   animationID = 0;
 
   buttonText = "Drop Block"
+
+  showingLeaderboard = true;
 
   blocks = [
     { id: 1, posX: 0, direction: -1, width: this.gameWidth, height: this.blockHeight },
@@ -129,6 +132,7 @@ export class Game {
       block.posX *= this.endGameTowerScale
     })
     this.saveScore();
+    this.showLeaderboard();
   }
 
   restartGame() {
@@ -149,5 +153,9 @@ export class Game {
   saveScore() {
     const name = this.playerService.getPlayerName();
     this.scoreService.addScore({ playerName: name, score: this.score });
+  }
+
+  showLeaderboard() {
+    this.showingLeaderboard = true;
   }
 }
