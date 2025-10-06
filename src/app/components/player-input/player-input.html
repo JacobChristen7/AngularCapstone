@@ -2,8 +2,8 @@
     <form class="example-form">
     <mat-form-field class="example-full-width">
         <mat-label>Player Name</mat-label>
-        <input matInput placeholder="Ex. Pizza" value="name">
+        <input #myInput matInput placeholder="Ex. Pizza" value="name">
     </mat-form-field>
     </form>
-    <button mat-raised-button color="primary w-54" (click)="startGame()">Start Game</button>
+    <button mat-raised-button color="primary w-54" (click)="startGame(myInput.value)">Start Game</button>
 </div>

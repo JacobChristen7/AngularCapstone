@@ -2,10 +2,15 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButton } from '@angular/material/button';
+import { LeaderBoard } from '../leader-board/leader-board';
+
+import { ScoreService } from '../../services/score.service';
+import { PlayerService } from '../../services/player.service';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
-  imports: [CommonModule, MatGridListModule, MatButton],
+  imports: [CommonModule, MatGridListModule, MatButton, LeaderBoard],
   templateUrl: './game.html',
   styleUrl: './game.css'
 })
@@ -39,7 +44,7 @@ export class Game {
     return this.blocks.find(b => b.id === this.nextID - 2);
   }
 
-  constructor() {
+  constructor(private scoreService: ScoreService, private playerService: PlayerService) {
     this.animateBlock();
   }
 
@@ -123,6 +128,7 @@ export class Game {
       block.height *= this.endGameTowerScale
       block.posX *= this.endGameTowerScale
     })
+    this.saveScore();
   }
 
   restartGame() {
@@ -138,5 +144,10 @@ export class Game {
     ];
     this.stopAnimation();
     this.animateBlock();
+  }
+
+  saveScore() {
+    const name = this.playerService.getPlayerName();
+    this.scoreService.addScore({ playerName: name, score: this.score });
   }
 }
