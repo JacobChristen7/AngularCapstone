@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collectionData, collection, addDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 export interface Score {
   playerName: string;
@@ -22,5 +22,18 @@ export class ScoreService {
   addScore(scoreRecord: { playerName: string; score: number }) {
     const scoresRef = collection(this.firestore, 'scores');
     return addDoc(scoresRef, scoreRecord);
+  }
+
+  private latestScoreSubject = new BehaviorSubject<{ score: number, playerName: string } | null>(null);
+  latestScore$ = this.latestScoreSubject.asObservable();
+
+  setLatestScore(score: number, playerName: string) {
+    this.latestScoreSubject.next({ score, playerName });
+    localStorage.setItem('latestScore', JSON.stringify({ score, playerName }));
+  }
+
+  getPersistedLatestScore() {
+    const data = localStorage.getItem('latestScore');
+    return data ? JSON.parse(data) : null;
   }
 }
