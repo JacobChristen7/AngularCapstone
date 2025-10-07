@@ -1,9 +1,9 @@
-<div class="flex flex-row gap-x-5 mb-10">
-	<div class="mx-auto mt-6 p-6 rounded-lg shadow bg-gradient-to-r from-red-100 to-red-300 text-center transition-transform duration-500 ease-in-out hover:scale-105">
+<div class="flex flex-row gap-x-5 max-w-md m-auto mb-10">
+	<div class="mx-auto mt-6 p-6 rounded-lg shadow bg-gradient-to-r from-red-100 to-red-300 text-center transition-transform duration-500 ease-in-out hover:scale-105" [routerLink]="['/leader-board']">
 		<div class="text-2xl font-bold text-red-700 mb-2">Your Score!</div>
 		<div class="text-4xl font-extrabold text-red-900"> {{score}}</div>
 	</div>
-	<div class="mx-auto mt-6 p-6 rounded-lg shadow bg-gradient-to-r from-red-100 to-red-300 text-center transition-transform duration-500 ease-in-out hover:scale-105">
+	<div class="mx-auto mt-6 p-6 rounded-lg shadow bg-gradient-to-r from-red-100 to-red-300 text-center transition-transform duration-500 ease-in-out hover:scale-105" [routerLink]="['/leader-board']">
 		<div class="text-2xl font-bold text-red-700 mb-2">You Ranked!</div>
 		<div class="text-4xl font-extrabold text-red-900"> {{ranking}} </div>
 	</div>
