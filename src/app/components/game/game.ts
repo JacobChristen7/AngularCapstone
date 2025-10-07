@@ -7,11 +7,10 @@ import { Ranking } from '../ranking/ranking';
 
 import { ScoreService } from '../../services/score.service';
 import { PlayerService } from '../../services/player.service';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
-  imports: [CommonModule, MatGridListModule, MatButton, LeaderBoard, Ranking],
+  imports: [CommonModule, MatGridListModule, MatButton, Ranking],
   templateUrl: './game.html',
   styleUrl: './game.css'
 })
@@ -33,7 +32,7 @@ export class Game {
 
   buttonText = "Drop Block"
 
-  showingLeaderboard = true;
+  showRankings = false;
 
   blocks = [
     { id: 1, posX: 0, direction: -1, width: this.gameWidth, height: this.blockHeight },
@@ -83,6 +82,7 @@ export class Game {
 
     } else {
       this.restartGame()
+      this.showRankings = false
       this.buttonText = "Drop Block"
     }
   }
@@ -132,7 +132,7 @@ export class Game {
       block.posX *= this.endGameTowerScale
     })
     this.saveScore();
-    this.showLeaderboard();
+    this.showRankings = true
   }
 
   restartGame() {
@@ -154,9 +154,5 @@ export class Game {
     const name = this.playerService.getPlayerName();
     this.scoreService.addScore({ playerName: name, score: this.score });
     this.scoreService.setLatestScore(this.score, name);
-  }
-
-  showLeaderboard() {
-    this.showingLeaderboard = true;
   }
 }

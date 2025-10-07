@@ -6,11 +6,17 @@
     </div>
     <div class="fixed bottom-10 flex flex-col justify-center items-center w-full">
         <div class="bg-gray-500/30 backdrop-blur-lg border-1 border-white/50 p-10 rounded-lg space-y-5 w-1/4">
-            <div class="text-white">
-                <p class="font-semibold text-3xl text-center mb-5">Score</p>
-                <p class="font-extrabold text-5xl text-center" id="score" [style.transform]="`scale(${scoreScale})`"> {{ score }} </p>
-            </div>
+            @if(showRankings) {
+                <app-ranking></app-ranking>
+            } @else {
+                <div class="text-white">
+                    <p class="font-semibold text-3xl text-center mb-5">Score</p>
+                    <p class="font-extrabold text-5xl text-center" id="score" [style.transform]="`scale(${scoreScale})`"> {{ score }} </p>
+                </div>
+            }
             <button mat-raised-button color="primary w-full" (click)="dropBlock()"> {{ buttonText }} </button>
         </div>
     </div>
 </div>
+
+<!-- [style.transform]="`scale(60%)`" -->
