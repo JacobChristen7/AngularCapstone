@@ -153,5 +153,6 @@ export class Game {
   saveScore() {
     const name = this.playerService.getPlayerName();
     this.scoreService.addScore({ playerName: name, score: this.score });
+    this.scoreService.setLatestScore(this.score, name);
   }
 }

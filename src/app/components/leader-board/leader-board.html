@@ -1,36 +1,41 @@
-<mat-card class="max-w-md mx-auto mt-5 shadow-lg bg-white transition-transform duration-500 ease-in-out hover:scale-105">
-  <mat-card-title class="text-center text-red-500 py-7">
-    <span class="text-4xl border-y-4 rounded-lg">Leaderboard</span>
-  </mat-card-title>
-  <mat-card-content class="">
-    <div *ngFor="let score of scores$ | async; let i = index" 
-					class="flex justify-between items-center py-2 px-4 border-b last:border-b-0 transition-transform duration-200 ease-in-out hover:scale-105">
-			<span
-				class="flex items-center"
-				[ngClass]="{
-					'text-3xl font-extrabold text-yellow-400': i === 0,
-					'text-2xl font-bold text-gray-400': i === 1,
-					'text-xl font-bold text-orange-700': i === 2,
-					'text-base font-medium text-gray-700': i > 2
-				}"
-			>
-				{{ i + 1 }}.
-				<span [ngClass]="{ 'shine-target': i === 0 }" class="pl-2">{{ score.playerName }}</span>
-				<span *ngIf="i === 0" class="pl-2">🏆</span>
-			</span>
-			<div class="w-24 text-right">
+<div id="background">
+	<mat-card class="max-w-md mx-auto mt-20 shadow-lg bg-white transition-transform duration-500 ease-in-out hover:scale-105">
+		<mat-card-title class="text-center text-red-500 py-7">
+			<span class="text-4xl border-y-4 rounded-lg">Leaderboard</span>
+		</mat-card-title>
+		<mat-card-content class="">
+			<div *ngFor="let score of scores$ | async; let i = index" 
+						class="flex justify-between items-center py-2 px-4 border-b last:border-b-0 transition-transform duration-200 ease-in-out hover:scale-105">
 				<span
+					class="flex items-center"
 					[ngClass]="{
-						'text-yellow-400 font-extrabold text-3xl': i === 0,
-						'text-gray-400 font-bold text-2xl': i === 1,
-						'text-orange-700 font-bold text-xl': i === 2,
-						'text-gray-700 font-medium text-base': i > 2
+						'text-3xl font-extrabold text-yellow-400': i === 0,
+						'text-2xl font-bold text-gray-400': i === 1,
+						'text-xl font-bold text-orange-700': i === 2,
+						'text-base font-medium text-gray-700': i > 2
 					}"
 				>
-					{{ score.score }}
+					{{ i + 1 }}.
+					<span [ngClass]="{ 'shine-target': i === 0 }" class="pl-2">{{ score.playerName }}</span>
+					<span *ngIf="i === 0" class="pl-2">🏆</span>
 				</span>
+				<div class="w-24 text-right">
+					<span
+						[ngClass]="{
+							'text-yellow-400 font-extrabold text-3xl': i === 0,
+							'text-gray-400 font-bold text-2xl': i === 1,
+							'text-orange-700 font-bold text-xl': i === 2,
+							'text-gray-700 font-medium text-base': i > 2
+						}"
+					>
+						{{ score.score }}
+					</span>
+				</div>
 			</div>
-		</div>
-  </mat-card-content>
-</mat-card>
-<app-ranking></app-ranking>
+		</mat-card-content>
+	</mat-card>
+	<div class="flex justify-center">
+		<div class="text-2xl max-w-64 font-bold text-center text-red-700 mt-6 transition-transform duration-500 ease-in-out hover:scale-105">Great Job {{ latestPlayerName }}!</div>
+	</div>
+	<app-ranking [score]="latestScore" [playerName]="latestPlayerName" [ranking]="latestRank"></app-ranking>
+</div>

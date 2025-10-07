@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -8,14 +8,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './ranking.css'
 })
 export class Ranking {
-  ranking = 0;
-  score = 0;
+  @Input() score: number = 0;
+  @Input() playerName: string = '';
+  @Input() ranking: number = 0;
 
   constructor() {
-    
-  }
-
-  getRanking() {
     
   }
 }
