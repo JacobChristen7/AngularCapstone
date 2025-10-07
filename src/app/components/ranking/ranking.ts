@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-ranking',
@@ -7,14 +7,11 @@ import { Component } from '@angular/core';
   styleUrl: './ranking.css'
 })
 export class Ranking {
-  ranking = 0;
-  score = 0;
+  @Input() score: number = 0;
+  @Input() playerName: string = '';
+  @Input() ranking: number = 0;
 
   constructor() {
-    
-  }
-
-  getRanking() {
     
   }
 }
