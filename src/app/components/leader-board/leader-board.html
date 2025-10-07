@@ -1,5 +1,5 @@
-<div id="background">
-	<mat-card class="max-w-md mx-auto mt-20 shadow-lg bg-white transition-transform duration-500 ease-in-out hover:scale-105">
+<div id="background" (mousemove)="onMouseMove($event)">
+	<mat-card class="max-w-md mx-auto mt-14 shadow-lg bg-white transition-transform duration-500 ease-in-out hover:scale-105">
 		<mat-card-title class="text-center text-red-500 py-7">
 			<span class="text-4xl border-y-4 rounded-lg">Leaderboard</span>
 		</mat-card-title>
@@ -35,7 +35,7 @@
 		</mat-card-content>
 	</mat-card>
 	<div class="flex justify-center">
-		<div class="text-2xl max-w-64 font-bold text-center text-red-700 mt-6 transition-transform duration-500 ease-in-out hover:scale-105">Great Job {{ latestPlayerName }}!</div>
+		<div class="text-2xl max-w-64 font-bold p-2 rounded-lg shadow bg-red-100 text-center text-red-500 mt-6 transition-transform duration-500 ease-in-out hover:scale-105">Great Job {{ latestPlayerName }}!</div>
 	</div>
 	<app-ranking [score]="latestScore" [playerName]="latestPlayerName" [ranking]="latestRank"></app-ranking>
 </div>
