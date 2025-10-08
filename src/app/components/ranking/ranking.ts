@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Score, ScoreService } from '../../services/score.service';
 
 @Component({
   selector: 'app-ranking',
@@ -12,7 +13,9 @@ export class Ranking {
   @Input() playerName: string = '';
   @Input() ranking: number = 0;
 
-  constructor() {
-    
+  constructor(private scoreService: ScoreService) {
+    this.score = scoreService.latestScore
+    this.playerName = scoreService.latestPlayerName
+    this.ranking = scoreService.latestRank
   }
 }

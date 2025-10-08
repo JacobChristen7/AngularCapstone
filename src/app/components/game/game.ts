@@ -46,7 +46,7 @@ export class Game {
     return this.blocks.find(b => b.id === this.nextID - 2);
   }
 
-  constructor(private scoreService: ScoreService, private playerService: PlayerService) {
+  constructor(public scoreService: ScoreService, private playerService: PlayerService) {
     this.animateBlock();
   }
 

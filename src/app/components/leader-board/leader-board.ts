@@ -15,37 +15,8 @@ export class LeaderBoard {
   
   scores$: Observable<Score[]>;
 
-  latestScore: number = 0;
-  latestPlayerName: string = '';
-  latestRank: number = 0;
-
-  constructor(private scoreService: ScoreService) {
-    this.scores$ = this.scoreService.getScores().pipe(
-      map(scores => scores.sort((a, b) => b.score - a.score).slice(0, 10))
-    );
-
-    this.scoreService.latestScore$.subscribe(latest => {
-      if (latest) {
-        this.setLatestScoreAndRank(latest.score, latest.playerName);
-      }
-    });
-
-    // On init, check persisted score
-    const persisted = this.scoreService.getPersistedLatestScore();
-    if (persisted) {
-      this.setLatestScoreAndRank(persisted.score, persisted.playerName);
-    }
-  }
-
-  setLatestScoreAndRank(score: number, playerName: string) {
-    this.latestScore = score;
-    this.latestPlayerName = playerName;
-    this.scoreService.getScores().subscribe(scores => {
-      // Sort scores descending
-      const sorted = scores.sort((a, b) => b.score - a.score);
-      // Find the rank (index + 1)
-      this.latestRank = sorted.findIndex(s => s.playerName === playerName && s.score === score) + 1;
-    });
+  constructor(public scoreService: ScoreService) {
+    this.scores$ = scoreService.scores$
   }
 
   // Function for mouse background movement

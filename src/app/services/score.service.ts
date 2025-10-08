@@ -1,19 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collectionData, collection, addDoc } from '@angular/fire/firestore';
-import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
+import { Observable, BehaviorSubject, map } from 'rxjs';
 
 export interface Score {
   playerName: string;
   score: number;
-  // Add other fields as needed
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScoreService {
-  constructor(private firestore: Firestore, private authService: AuthService) {}
+  latestScore = 0;
+  latestPlayerName = "";
+  latestRank = 0;
+  scores$: Observable<Score[]>;
+
+  constructor(private firestore: Firestore, private authService: AuthService) {
+    this.scores$ = this.getScores().pipe(
+      map(scores => scores.sort((a, b) => b.score - a.score).slice(0, 10))
+    );
+  
+    this.latestScore$.subscribe(latest => {
+      if (latest) {
+        this.setLatestScoreAndRank(latest.score, latest.playerName);
+      }
+    });
+  
+    // On init, check persisted score
+    const persisted = this.getPersistedLatestScore();
+    if (persisted) {
+      this.setLatestScoreAndRank(persisted.score, persisted.playerName);
+    }
+  }
 
   getScores(): Observable<Score[]> {
     const scoresRef = collection(this.firestore, 'scores');
@@ -41,5 +61,16 @@ export class ScoreService {
   getPersistedLatestScore() {
     const data = localStorage.getItem('latestScore');
     return data ? JSON.parse(data) : null;
+  }
+
+  setLatestScoreAndRank(score: number, playerName: string) {
+    this.latestScore = score;
+    this.latestPlayerName = playerName;
+    this.getScores().subscribe(scores => {
+      // Sort scores descending
+      const sorted = scores.sort((a, b) => b.score - a.score);
+      // Find the rank (index + 1)
+      this.latestRank = sorted.findIndex(s => s.playerName === playerName && s.score === score) + 1;
+    });
   }
 }
