@@ -22,10 +22,10 @@ export class Game {
   score = 0;
   scoreScale = 1;
   modHowFarLeftAndRight = 1.1;
-  blockSpeed = 300;
+  blockSpeed = 600;
   towerScale = 1;
   divBottomProperty = "auto";
-  topPadding = String(160);
+  topPadding = String(80);
   endGameTowerScale = 0.4;
   endGameTransition = "none";
   animationID = 0;
@@ -131,8 +131,8 @@ export class Game {
       block.height *= this.endGameTowerScale
       block.posX *= this.endGameTowerScale
     })
-    this.saveScore();
     this.showRankings = true
+    this.saveScore();
   }
 
   restartGame() {
@@ -153,6 +153,6 @@ export class Game {
   saveScore() {
     const name = this.playerService.getPlayerName();
     this.scoreService.addScore({ playerName: name, score: this.score });
-    this.scoreService.setLatestScore(this.score, name);
+    this.scoreService.setLatestScoreAndRank(this.score, name);
   }
 }
