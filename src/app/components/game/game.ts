@@ -25,8 +25,8 @@ export class Game {
   blockSpeed = 600;
   towerScale = 1;
   divBottomProperty = "auto";
-  topPadding = String(80);
-  endGameTowerScale = 0.4;
+  topPadding = String(90);
+  endGameTowerScale = 0.3;
   endGameTransition = "none";
   animationID = 0;
 

@@ -16,7 +16,9 @@ export class LeaderBoard {
   scores$: Observable<Score[]>;
 
   constructor(public scoreService: ScoreService) {
-    this.scores$ = scoreService.scores$
+    this.scores$ = scoreService.scores$.pipe(
+      map(scores => scores.slice(0, 10))
+    )
   }
 
   // Function for mouse background movement
