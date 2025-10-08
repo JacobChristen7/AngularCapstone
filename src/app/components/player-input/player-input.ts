@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-player-input',
-  imports: [CommonModule, FormsModule, MatInputModule, MatButtonModule],
+  imports: [CommonModule, FormsModule, MatInputModule, MatButtonModule, RouterModule],
   templateUrl: './player-input.html',
   styleUrl: './player-input.css'
 })
@@ -63,6 +63,14 @@ export class PlayerInput {
     this.authService.signOut();
     this.user = null;
     this.playerName = '';
+    this.email = '';
+    this.password = '';
+  }
+
+  ngOnInit() {
+    this.authService.user$.subscribe(user => {
+      this.user = user;
+    });
   }
 
   startGame() {
