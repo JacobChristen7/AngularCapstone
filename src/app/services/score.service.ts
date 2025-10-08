@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Firestore, collectionData, collection, addDoc } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 import { Observable, BehaviorSubject, map } from 'rxjs';
@@ -12,14 +12,19 @@ export interface Score {
   providedIn: 'root'
 })
 export class ScoreService {
-  latestScore = 0;
-  latestPlayerName = "";
-  latestRank = 0;
+  latestScore = signal(0);
+  latestPlayerName = signal('');
+  latestRank = signal(0);
+
+  setScore(s: number) { this.latestScore.set(s); }
+  setPlayerName(n: string) { this.latestPlayerName.set(n); }
+  setRank(r: number) { this.latestRank.set(r); }
+
   scores$: Observable<Score[]>;
 
   constructor(private firestore: Firestore, private authService: AuthService) {
     this.scores$ = this.getScores().pipe(
-      map(scores => scores.sort((a, b) => b.score - a.score).slice(0, 10))
+      map(scores => scores.sort((a, b) => b.score - a.score))
     );
   
     this.latestScore$.subscribe(latest => {
@@ -28,11 +33,11 @@ export class ScoreService {
       }
     });
   
-    // On init, check persisted score
-    const persisted = this.getPersistedLatestScore();
-    if (persisted) {
-      this.setLatestScoreAndRank(persisted.score, persisted.playerName);
-    }
+    // // On init, check persisted score
+    // const persisted = this.getPersistedLatestScore();
+    // if (persisted) {
+    //   this.setLatestScoreAndRank(persisted.score, persisted.playerName);
+    // }
   }
 
   getScores(): Observable<Score[]> {
@@ -53,24 +58,26 @@ export class ScoreService {
   private latestScoreSubject = new BehaviorSubject<{ score: number, playerName: string } | null>(null);
   latestScore$ = this.latestScoreSubject.asObservable();
 
-  setLatestScore(score: number, playerName: string) {
-    this.latestScoreSubject.next({ score, playerName });
-    localStorage.setItem('latestScore', JSON.stringify({ score, playerName }));
-  }
+  // setLatestScore(score: number, playerName: string) {
+  //   this.latestScoreSubject.next({ score, playerName });
+  //   localStorage.setItem('latestScore', JSON.stringify({ score, playerName }));
+  // }
 
-  getPersistedLatestScore() {
-    const data = localStorage.getItem('latestScore');
-    return data ? JSON.parse(data) : null;
-  }
+  // getPersistedLatestScore() {
+  //   const data = localStorage.getItem('latestScore');
+  //   return data ? JSON.parse(data) : null;
+  // }
 
   setLatestScoreAndRank(score: number, playerName: string) {
-    this.latestScore = score;
-    this.latestPlayerName = playerName;
+    this.setScore(score)
+    this.setPlayerName(playerName);
     this.getScores().subscribe(scores => {
       // Sort scores descending
       const sorted = scores.sort((a, b) => b.score - a.score);
       // Find the rank (index + 1)
-      this.latestRank = sorted.findIndex(s => s.playerName === playerName && s.score === score) + 1;
+      const rank = sorted.findIndex(s => s.playerName === playerName && s.score === score) + 1;
+      this.setRank(rank)
+      console.log(this.latestRank)
     });
   }
 }

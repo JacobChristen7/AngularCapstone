@@ -13,9 +13,5 @@ export class Ranking {
   @Input() playerName: string = '';
   @Input() ranking: number = 0;
 
-  constructor(private scoreService: ScoreService) {
-    this.score = scoreService.latestScore
-    this.playerName = scoreService.latestPlayerName
-    this.ranking = scoreService.latestRank
-  }
+  constructor(public scoreService: ScoreService) {}
 }
