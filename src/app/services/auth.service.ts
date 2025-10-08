@@ -1,23 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, User } from '@angular/fire/auth';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private auth: Auth) {}
+  private userSubject = new BehaviorSubject<User | null>(null);
+  user$ = this.userSubject.asObservable();
 
-  signInEmail(email: string, password: string) {
-    return signInWithEmailAndPassword(this.auth, email, password);
+  constructor(private auth: Auth) {
+    // Listen for auth state changes
+    onAuthStateChanged(this.auth, (user) => {
+      this.userSubject.next(user);
+    });
   }
 
-  signUpEmail(email: string, password: string) {
-    return createUserWithEmailAndPassword(this.auth, email, password);
+  async signUpEmail(email: string, password: string) {
+    const result = await createUserWithEmailAndPassword(this.auth, email, password);
+    this.userSubject.next(result.user); // Set the user immediately
+    return result;
   }
 
-  signInGoogle() {
-    return signInWithPopup(this.auth, new GoogleAuthProvider());
+  async signInEmail(email: string, password: string) {
+    const result = await signInWithEmailAndPassword(this.auth, email, password);
+    this.userSubject.next(result.user);
+    return result;
   }
 
-  signOut() {
-    return signOut(this.auth);
+  async signInGoogle() {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(this.auth, provider);
+    this.userSubject.next(result.user);
+    return result;
+  }
+
+  async signOut() {
+    await signOut(this.auth);
+    this.userSubject.next(null);
+  }
+
+  getCurrentUser(): User | null {
+    return this.auth.currentUser;
   }
 }

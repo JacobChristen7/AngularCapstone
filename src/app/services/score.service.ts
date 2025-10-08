@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collectionData, collection, addDoc } from '@angular/fire/firestore';
+import { AuthService } from './auth.service';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 
 export interface Score {
@@ -16,7 +17,7 @@ export class ScoreService {
   latestRank = 0;
   scores$: Observable<Score[]>;
 
-  constructor(private firestore: Firestore) {
+  constructor(private firestore: Firestore, private authService: AuthService) {
     this.scores$ = this.getScores().pipe(
       map(scores => scores.sort((a, b) => b.score - a.score).slice(0, 10))
     );
@@ -40,6 +41,11 @@ export class ScoreService {
   }
 
   addScore(scoreRecord: { playerName: string; score: number }) {
+    // Only allow adding score if user is authenticated
+    const user = (this.authService as any).auth.currentUser;
+    if (!user) {
+      throw new Error('User must be authenticated to add score.');
+    }
     const scoresRef = collection(this.firestore, 'scores');
     return addDoc(scoresRef, scoreRecord);
   }
