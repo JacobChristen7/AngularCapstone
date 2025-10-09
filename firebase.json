@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/AngularCapstone",
+    "public": "dist/AngularCapstone/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
